@@ -6,6 +6,7 @@ export default {
     "./pages/**/*.vue",
     "./app.vue",
     "./plugins/**/*.{js,ts}",
+    "./formkit.theme.ts",
   ],
   theme: {
     extend: {},

@@ -21,7 +21,6 @@ export default defineEventHandler(async () => {
 
     return imagesWithSignedUrls;
 
-    return false;
   } catch (err) {
     return { error: "Failed to load images" };
   }
