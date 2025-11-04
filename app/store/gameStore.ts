@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { jwtDecode } from "jwt-decode";
+import { getSocket } from "~/socket/socket";
 
 interface AUTHENTICATION {
   accessToken: string;
@@ -19,11 +20,13 @@ type GameStoreState = {
   userLoggedIn: boolean;
   authentication: AUTHENTICATION;
   userDetails: USER;
+  isConnected: boolean;
 };
 
 export const useGameStore = defineStore("game", {
   state: (): GameStoreState => ({
     userLoggedIn: false,
+    isConnected: false,
     authentication: {
       accessToken: "",
       idToken: "",
@@ -92,7 +95,6 @@ export const useGameStore = defineStore("game", {
       if (idToken.value) {
         this.userLoggedIn = true;
         const decoded: USER = jwtDecode(idToken.value);
-        console.log("decoded", decoded);
 
         this.userDetails = {
           email: decoded.email,
@@ -100,6 +102,29 @@ export const useGameStore = defineStore("game", {
           phone_number: decoded.phone_number,
           picture: decoded.picture,
         };
+      }
+    },
+    socketEvents() {
+      const socket = getSocket(); // lazy init
+
+      socket.connect(); // ✅ manually connect now
+
+      socket.on("connect", () => {
+        this.isConnected = true;
+        console.log("🟢 Connected to socket server:", socket.id);
+      });
+
+      socket.on("disconnect", () => {
+        this.isConnected = false;
+        console.log("🔴 Disconnected from socket server");
+      });
+    },
+    disconnectSocket() {
+      const socket = getSocket();
+      if (socket.connected) {
+        socket.disconnect();
+        this.isConnected = false;
+        console.log("Socket disconnected manually");
       }
     },
   },

@@ -10,18 +10,27 @@ useHead({
 
 const { data } = await useFetch<Movie[]>("/gameImages");
 const gameStore = useGameStore();
-console.log("user details: ", gameStore.setUserDetails);
 const tictactoe = data.value?.find((i: Movie) => i.name === "tictactoe")?.img;
 const memorygame = data.value?.filter((i: Movie) => i.name === "memorygame")[0]
   ?.img;
 const guessthemovie = data.value?.filter(
   (i: Movie) => i.name === "guessthemovie"
 )[0]?.img;
+
+onMounted(() => {
+  gameStore.socketEvents();
+});
 </script>
 
 <template>
   <div class="h-screen bg-rose-50">
     <Header></Header>
+    <p>
+      Status:
+      <span :class="gameStore.isConnected ? 'text-green-600' : 'text-red-600'">
+        {{ gameStore.isConnected ? "Connected" : "Disconnected" }}
+      </span>
+    </p>
     <div class="p-5 flex justify-center w-full">
       <p class="text-lg font-extrabold font-serif">Select a game to play!</p>
     </div>

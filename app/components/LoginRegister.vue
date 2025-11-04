@@ -58,6 +58,7 @@ const submitLogin = async (details: RegistrationFormData) => {
       expiresIn: userLogin?.tokens.expiresIn ?? 0,
     });
     gameStore.storeUserDetails(userLogin?.tokens.idToken ?? "");
+    gameStore.socketEvents();
     router.push("/home");
   }
 };
