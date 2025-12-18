@@ -1,0 +1,10 @@
+1. Multiplayer Gaming
+2. GenAI Game - Create questions using openAI api
+3. AI Chatbot/AI Hints
+
+
+Upgrades:
+1. Multiple User Chat
+2. Store Chat History
+3. Store Users in DB.
+4. Friends/Followers?

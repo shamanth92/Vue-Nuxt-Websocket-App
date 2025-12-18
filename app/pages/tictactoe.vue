@@ -4,7 +4,8 @@ import confetti from "canvas-confetti";
 import TicTacToeGame from "~/components/TicTacToeGame.vue";
 import ScoreBoard from "~/components/ScoreBoard.vue";
 import Header from "~/components/Header.vue";
-
+import { VueSpinnerHourglass } from "vue3-spinners";
+import { useGameStore } from "~/store/gameStore";
 useHead({
   title: "Tic Tac Toe",
 });
@@ -25,6 +26,10 @@ const endGame = ref(false);
 const startNew = ref(false);
 
 const restartGame = ref(false);
+
+const findPlayer = ref(false);
+
+const gameStore = useGameStore();
 
 onMounted(() => {
   const savedState = localStorage.getItem("ticTacToeState");
@@ -184,6 +189,11 @@ watch([playerOne, playerTwo, startGameOption], () => {
   };
   localStorage.setItem("ticTacToeState", JSON.stringify(state));
 });
+
+const findOnlinePlayer = () => {
+  findPlayer.value = true;
+  gameStore.startMultiplayerGame(gameStore.userDetails);
+};
 </script>
 
 <template>
@@ -271,7 +281,26 @@ watch([playerOne, playerTwo, startGameOption], () => {
           </button>
         </div>
       </form>
+      <div class="pt-4 flex flex-col gap-4">
+        <p class="font-serif text-xl">Try the New Mode!</p>
+        <div class="flex gap-4">
+          <button
+            :class="[
+              'p-4 text-white font-serif text-lg rounded-full',
+              !findPlayer ? 'bg-blue-500 cursor-pointer' : 'bg-gray-300',
+            ]"
+            @click="findOnlinePlayer()"
+            :disabled="findPlayer"
+          >
+            Play Multiplayer Mode
+          </button>
+          <div class="flex justify-center items-center">
+            <VueSpinnerHourglass size="40" color="red" v-if="findPlayer" />
+          </div>
+        </div>
+      </div>
     </div>
+
     <Transition
       enter-active-class="transition-opacity duration-300"
       enter-from-class="opacity-0"

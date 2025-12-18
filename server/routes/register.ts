@@ -25,7 +25,7 @@ export default defineEventHandler(async (event) => {
         {
           Name: "picture",
           Value:
-            "https://images.unsplash.com/photo-1533738363-b7f9aef128ce?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fGNhdHxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&q=60&w=600",
+            "https://plus.unsplash.com/premium_photo-1673967831980-1d377baaded2?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8Y2F0fGVufDB8MXwwfHx8MA%3D%3D",
         },
       ],
     });

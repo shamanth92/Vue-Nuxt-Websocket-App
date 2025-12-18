@@ -8,7 +8,8 @@ useHead({
   title: "Game Arcade",
 });
 
-const { data } = await useFetch<Movie[]>("/gameImages");
+const { data, error } = await useFetch<Movie[]>("/gameImages");
+console.log(data.value, error.value);
 const gameStore = useGameStore();
 const tictactoe = data.value?.find((i: Movie) => i.name === "tictactoe")?.img;
 const memorygame = data.value?.filter((i: Movie) => i.name === "memorygame")[0]
@@ -16,10 +17,26 @@ const memorygame = data.value?.filter((i: Movie) => i.name === "memorygame")[0]
 const guessthemovie = data.value?.filter(
   (i: Movie) => i.name === "guessthemovie"
 )[0]?.img;
+const selectedUser = ref<any>(null);
+const message = ref("");
+const currentUser = gameStore.userDetails;
 
 onMounted(() => {
   gameStore.socketEvents();
+  gameStore.listenForMessages();
 });
+
+const selectUser = (user: any) => {
+  selectedUser.value = user;
+};
+
+console.log("selectedUser: ", selectedUser.value);
+
+// const sendMessage = () => {
+//   if (!selectedUser.value) return;
+//   gameStore.sendChatMessage(selectedUser.value.email, message.value);
+//   message.value = "";
+// };
 </script>
 
 <template>
@@ -31,6 +48,7 @@ onMounted(() => {
         {{ gameStore.isConnected ? "Connected" : "Disconnected" }}
       </span>
     </p>
+    <div></div>
     <div class="p-5 flex justify-center w-full">
       <p class="text-lg font-extrabold font-serif">Select a game to play!</p>
     </div>
@@ -50,6 +68,10 @@ onMounted(() => {
         route="/guessthemovie"
         :imagePath="guessthemovie"
       />
+    </div>
+    <div class="fixed bottom-6 right-6 z-50 flex items-end gap-4">
+      <UserChat />
+      <Chatbox />
     </div>
   </div>
 </template>
